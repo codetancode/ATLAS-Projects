@@ -138,7 +138,7 @@ public class SeatManager extends BaseManager {
       System.out.println("\nNo Seat Availability found on any route\n");
       return false;
     }
-    this.goToPrevious(resultSet);
+//    this.goToPrevious(resultSet);
 
     System.out.println("START TIMING\tROUTE ID\t\tAVAILABLE SEATS");
 

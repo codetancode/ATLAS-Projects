@@ -260,6 +260,7 @@ public class QueryBuilder {
     }
     query += ";";
 
+    System.out.println(query);
     return query;
   }
 

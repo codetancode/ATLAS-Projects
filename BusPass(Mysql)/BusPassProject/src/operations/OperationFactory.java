@@ -15,9 +15,7 @@ public class OperationFactory {
     return AdminLoginOperation.getInstance();
   }
 
-  public static AdminOperation getAdminOperationInstance() {
-    return new AdminOperation();
-  }
+  public static AdminOperation getAdminOperationInstance() { return new AdminOperation();}
 
   public static UserLoginOperation getUserLoginInstance() {
     return new UserLoginOperation();

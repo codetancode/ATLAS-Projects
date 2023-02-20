@@ -18,6 +18,7 @@ public class QueryExecutor {
 
   private static QueryExecutor queryExecutor;
 
+
   private QueryExecutor() {
   }
 
@@ -32,7 +33,7 @@ public class QueryExecutor {
   public boolean executeSQL(String sqlQuery) throws SQLException, ClassNotFoundException {
     Connection conn = ConnectionManager.getConnection();
     Statement statement = conn.createStatement();
-
+    System.out.println(sqlQuery);
     int result = statement.executeUpdate(sqlQuery);
 
     if (result != 0) {
@@ -45,6 +46,7 @@ public class QueryExecutor {
   public boolean executeSQL(String sqlQuery, String[] headers) throws SQLException, ClassNotFoundException {
     Connection conn = ConnectionManager.getConnection();
     Statement statement = conn.createStatement();
+    System.out.println(sqlQuery);
 
     ResultSet resultSet = statement.executeQuery(sqlQuery);
 
@@ -57,7 +59,7 @@ public class QueryExecutor {
       return false;
     }
 
-    resultSet.previous();
+//    resultSet.previous();
 
     while (resultSet.next()) {
       System.out.println();
@@ -75,6 +77,7 @@ public class QueryExecutor {
   public boolean isRecordPresent(String sqlQuery) throws SQLException, ClassNotFoundException {
     Connection conn = ConnectionManager.getConnection();
     Statement statement = conn.createStatement();
+    System.out.println(sqlQuery);
 
     ResultSet resultSet = statement.executeQuery(sqlQuery);
 
@@ -88,6 +91,7 @@ public class QueryExecutor {
   public int getQueryNumber(String sqlQuery) throws SQLException, ClassNotFoundException {
     Connection conn = ConnectionManager.getConnection();
     Statement statement = conn.createStatement();
+    System.out.println(sqlQuery);
 
     ResultSet resultSet = statement.executeQuery(sqlQuery);
 
@@ -101,6 +105,7 @@ public class QueryExecutor {
   public ResultSet getResultSet(String sqlQuery) throws SQLException, ClassNotFoundException {
     Connection conn = ConnectionManager.getConnection();
     Statement statement = conn.createStatement();
+    System.out.println(sqlQuery);
     ResultSet resultSet = statement.executeQuery(sqlQuery);
     return resultSet;
   }

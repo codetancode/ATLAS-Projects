@@ -91,7 +91,7 @@ public class BusManager extends BaseManager {
       return false;
     }
 
-    this.goToPrevious(resultSet);
+//    this.goToPrevious(resultSet);
 
     displaySchedule(resultSet, true);
 
