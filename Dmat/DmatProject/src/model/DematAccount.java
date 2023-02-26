@@ -67,21 +67,37 @@ public class DematAccount {
         return this.shareIdHeld;
     }
 
-    public void addShareIdHeld(String shareIdHeld) {
+    public void addShareIdHeld(String shareId) {
         if(this.shareIdHeld == null){
-            this.shareIdHeld = shareIdHeld;
+            this.shareIdHeld = shareId;
         }else{
-            this.shareIdHeld.concat("|"+shareIdHeld);
+            this.shareIdHeld = this.shareIdHeld + "|"+shareId;
         }
     }
 
     public void removeShareIdHeld(String shareIdToRemove) {
         if(this.shareIdHeld != null){
-            List<String> shareIds = List.of(this.shareIdHeld.split("|"));
-            shareIds.remove(shareIdToRemove);
-            for(String s: shareIds){
-                addShareIdHeld(s);
+            String ids = "";
+            String finalString = "";
+            for(int i=0;i < this.shareIdHeld.length();i++){
+                if(this.shareIdHeld.charAt(i) == '|'){
+                    if(!ids.equals(shareIdToRemove)){
+                        if(finalString == ""){
+                            finalString = finalString + ids;
+                        }else{
+                            finalString = finalString+"|"+ids;
+                        }
+                    }
+                    ids="";
+
+                }else{
+                    ids = ids + shareIdHeld.charAt(i);
+                }
             }
+            if(!ids.equals(shareIdToRemove)){
+                finalString = finalString +"|"+ids;
+            }
+            this.shareIdHeld = finalString;
         }
     }
 
@@ -93,16 +109,31 @@ public class DematAccount {
         if(this.boughtTransactionId == null){
             this.boughtTransactionId = boughtTransactionId;
         }else{
-            this.boughtTransactionId.concat("|"+boughtTransactionId);
+            this.boughtTransactionId = this.boughtTransactionId + "|"+boughtTransactionId;
         }
     }
     public void removeBoughtTransactionId(String boughtTransactionIdToRemove) {
         if(this.boughtTransactionId != null){
-            List<String> boughtIds = List.of(this.boughtTransactionId.split("|"));
-            boughtIds.remove(boughtTransactionIdToRemove);
-            for(String s: boughtIds){
-                addBoughtTransactionId(s);
+            String ids = "";
+            String finalString = "";
+            for(int i=0;i < this.boughtTransactionId.length();i++){
+                if(this.boughtTransactionId.charAt(i) == '|'){
+                    if(!ids.equals(boughtTransactionIdToRemove)){
+                        if(finalString == ""){
+                            finalString = finalString + ids;
+                        }else{
+                            finalString = finalString+"|"+ids;
+                        }
+                    }
+                    ids="";
+                }else{
+                    ids = ids + this.boughtTransactionId.charAt(i);
+                }
             }
+            if(!ids.equals(boughtTransactionIdToRemove)){
+                finalString = finalString +"|"+ids;
+            }
+            this.boughtTransactionId = finalString;
         }
     }
 
@@ -114,16 +145,32 @@ public class DematAccount {
         if(this.soldTransactionId == null){
             this.soldTransactionId = soldTransactionId;
         }else{
-            this.soldTransactionId.concat("|"+soldTransactionId);
+            this.soldTransactionId = this.soldTransactionId + "|"+soldTransactionId;
         }
     }
     public void removeSoldTransactionId(String soldTransactionIdToRemove) {
         if(this.soldTransactionId != null){
-            List<String> soldIds = List.of(this.soldTransactionId.split("|"));
-            soldIds.remove(soldTransactionIdToRemove);
-            for(String s: soldIds){
-                addSoldTransactionId(s);
+            String ids = "";
+            String finalString = "";
+            for(int i=0;i < this.soldTransactionId.length();i++){
+                if(this.soldTransactionId.charAt(i) == '|'){
+                    if(!ids.equals(soldTransactionIdToRemove)){
+                        if(finalString == ""){
+                            finalString = finalString + ids;
+                        }else{
+                            finalString = finalString+"|"+ids;
+                        }
+                    }
+                    ids="";
+
+                }else{
+                    ids = ids + this.soldTransactionId.charAt(i);
+                }
             }
+            if(!ids.equals(soldTransactionIdToRemove)){
+                finalString = finalString +"|"+ids;
+            }
+            this.soldTransactionId = finalString;
         }
     }
 

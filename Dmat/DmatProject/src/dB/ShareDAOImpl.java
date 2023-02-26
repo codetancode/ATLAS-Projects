@@ -67,7 +67,6 @@ public class ShareDAOImpl implements DAO<Share>{
             try{
                 this.connection.close();
                 this.connection = null;
-                System.out.println("Disconnecting from DB ShareDAOImpl");
                 return true;
             }catch (Exception e) {
                 System.out.println("ERROR in disconnecting ShareDAOImpl" + e.getMessage());
@@ -172,7 +171,6 @@ public class ShareDAOImpl implements DAO<Share>{
     }
     @Override
     public boolean update(Share s) {
-        System.out.println("Updating share by object and putting db");
         this.share.put(s.getShareId(), s);
         try{
             if(this.connection == null) {

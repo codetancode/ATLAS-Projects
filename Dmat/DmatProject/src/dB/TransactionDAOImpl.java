@@ -75,7 +75,6 @@ public class TransactionDAOImpl implements DAO<Transaction> {
             try{
                 this.connection.close();
                 this.connection = null;
-                System.out.println("Disconnecting from DB accountDAO");
                 return true;
             }catch (Exception e) {
                 System.out.println("ERROR in disconnecting accountDAO" + e.getMessage());
@@ -156,7 +155,7 @@ public class TransactionDAOImpl implements DAO<Transaction> {
                 this.connectToDB();
             }
             this.sqlStatement = connection.createStatement();
-            System.out.println("select * from "+table+" where type='"+0+"' AND accountId='"+accNo+"';");
+//            System.out.println("select * from "+table+" where type='"+0+"' AND accountId='"+accNo+"';");
             ResultSet rs = this.sqlStatement.executeQuery("select * from "+table+" where type='"+0+"' AND accountId='"+accNo+"';");
 
             while(rs.next()){
@@ -173,9 +172,9 @@ public class TransactionDAOImpl implements DAO<Transaction> {
                 tranFromDB.add(t);
             }
 
-            for(Transaction t : tranFromDB){
-                System.out.println(t.getTransactionId()+" "+t.getTransactionShareId());
-            }
+//            for(Transaction t : tranFromDB){
+//                System.out.println(t.getTransactionId()+" "+t.getTransactionShareId());
+//            }
             this.disconnect();
             return tranFromDB;
 

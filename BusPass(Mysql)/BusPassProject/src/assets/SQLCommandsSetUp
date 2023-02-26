@@ -8,7 +8,7 @@ create table stop(stopid int NOT NULL PRIMARY KEY, stopname varchar(20));
 
 create table route(id INT NOT NULL PRIMARY KEY auto_increment, routeid int, stopid int, stoprank int);
 
-create table user(userid int NOT NULL PRIMARY KEY, fname varchar(50), lname varchar(50),
+create table auser(userid int NOT NULL PRIMARY KEY, fname varchar(50), lname varchar(50),
 email varchar(50), contactno varchar(12), emergencycontactno varchar(12),
 emergencycontactname varchar(50), bloodgroup varchar(12), password varchar(50));
                   

@@ -67,7 +67,6 @@ public class DematAccountDAOImpl implements DAO<DematAccount> {
             try{
                 this.connection.close();
                 this.connection = null;
-                System.out.println("Disconnecting from DB accountDAO");
                 return true;
             }catch (Exception e) {
                 System.out.println("ERROR in disconnecting accountDAO" + e.getMessage());
@@ -194,6 +193,11 @@ public class DematAccountDAOImpl implements DAO<DematAccount> {
 
         return this.dmatAccounts.containsKey(accNo);
     }
+
+    public boolean accountExist(long accNo){
+        return this.dmatAccounts.containsKey(accNo);
+    }
+
     public boolean isValidShareToSell(long accNo, long sid){
         if(this.dmatAccounts.containsKey(accNo)){
             DematAccount a = this.dmatAccounts.get(accNo);

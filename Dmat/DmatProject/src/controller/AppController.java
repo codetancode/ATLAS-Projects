@@ -93,7 +93,7 @@ public class AppController extends BaseController {
         System.out.println("\n Account Number [4 Digit Number or more]: \n");
         long accNo = this.getAccNo();
 
-        boolean accountAlreadyExists = AccountController.getInstance().isValidAccount(accNo);
+        boolean accountAlreadyExists = AccountController.getInstance().isAccountNumberExist(accNo);
 
         if (accountAlreadyExists) {
             System.out.println("This Account Number " + accNo + " already exists\n");

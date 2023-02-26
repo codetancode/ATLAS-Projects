@@ -91,14 +91,18 @@ public class AccountController extends BaseController {
             toDeposit = this.getAmount();
             acc.setBalance((int)(currentBal+toDeposit));
             accountService.accountDAO.update(acc);
+            System.out.println("You balance is updated to :"+(currentBal+toDeposit));
         }catch(InvalidInputException e){
             System.out.println("Error "+e.getMessage());
         }
-
     }
 
     protected boolean isValidAccount(long accNo){
         return accountService.accountDAO.isValidDmatAccount(accNo);
+    }
+
+    protected boolean isAccountNumberExist(long accNo){
+        return accountService.accountDAO.accountExist(accNo);
     }
 
     protected void createDmatAccount(DematAccount acc){
@@ -139,9 +143,9 @@ public class AccountController extends BaseController {
             if(!Validator.isPositive(shareId) || !Validator.isPositive(unit)){
                 throw new InvalidInputException("-ve numbers are not allowed");
             }
-            System.out.println("Is valid share and units "+accountService.shareDAO.isValidShareAndUnitToBuy(shareId, unit));
             if(accountService.shareDAO.isValidShareAndUnitToBuy(shareId, unit)){
                 buyShare(accNo, shareId, unit);
+
                 return true;
             }else{
                 throw new InvalidInputException("Error, either share is not available or entered units to Buy are more, or Insufficient balance");
@@ -163,7 +167,6 @@ public class AccountController extends BaseController {
             if(!Validator.isPositive(shareId) || !Validator.isPositive(unit)){
                 throw new InvalidInputException("-ve numbers are not allowed");
             }
-            System.out.println(accountService.shareDAO.isValidShareAndUnitToSell(shareId, unit));
 
             if(accountService.accountDAO.isValidShareToSell(accNo, shareId) &&
             accountService.shareDAO.isValidShareAndUnitToSell(shareId, unit)){
@@ -216,11 +219,13 @@ public class AccountController extends BaseController {
             acc.setBalance(currBal - finalAfterTransactionCharge);
             acc.addShareIdHeld(Long.toString(newShareRecord.getShareId()));
             acc.addBoughtTransactionId(Long.toString(t.getTransactionId()));
+
             //update account, add transaction, add share row
             accountService.accountDAO.update(acc);
             accountService.shareDAO.add(newShareRecord);
             accountService.shareDAO.updateBuy(shareId, unit);
             accountService.transactionDAO.add(t);
+            System.out.println("You successfully bought "+unit+" units of "+s.getCompanyName()+" Company |At "+finalAfterTransactionCharge+"| your Current Balance: "+acc.getBalance());
             return true;
         }else{
             System.out.println("Not enough Balance to Buy.."+currBal+" VS "+finalAfterTransactionCharge);
@@ -239,12 +244,8 @@ public class AccountController extends BaseController {
         Share selling = accountService.shareDAO.get(shareId);
         int soldAmt = selling.getCurrentPrice()*unit;
         int finalSoldAmt = (int) accountService.transactionDAO.addedChargeSelling(soldAmt);
-        if(selling.getTotalUnits() == unit){
-//            selling all units of with held share
-            acc.removeShareIdHeld(Long.toString(shareId));
-        }
+
         String parentShareId = accountService.transactionDAO.getParentShareId(shareId);
-        System.out.println("Getting parent shareId of share id "+shareId+" parent sid"+parentShareId);
         //adding a share row in table
         Share newShareRow = new Share();
         newShareRow.setShareId(accountService.shareDAO.nextShareId());
@@ -263,7 +264,6 @@ public class AccountController extends BaseController {
         t.setParentShareId(parentShareId);
         t.setTransactionShareId(String.valueOf(newShareRow.getShareId()));
         t.setTotalCost((long) soldAmt);
-        acc.addSoldTransactionId(String.valueOf(t.getTransactionId()));
 
 
         //update user balance, ids strings
@@ -271,13 +271,18 @@ public class AccountController extends BaseController {
         acc.addSoldTransactionId(String.valueOf(t.getTransactionId()));
 
         //need to update parent share of xample TSC as they are available now
-
+        if(selling.getTotalUnits() == unit){
+//            selling all units of with held share
+            acc.removeShareIdHeld(Long.toString(shareId));
+        }
         accountService.accountDAO.update(acc);
         accountService.shareDAO.add(newShareRow);
-        System.out.println("User updated, new share row added");
         accountService.shareDAO.updateSold(Long.valueOf(parentShareId), unit);
         accountService.shareDAO.updateBuy(Long.valueOf(shareId), unit);
         accountService.transactionDAO.add(t);
+        System.out.println("You successfully Sold "+unit+" units of "+selling.getCompanyName()+" Company |At "+finalSoldAmt);
+        System.out.println("Amount to be credited in you balance is :"+finalSoldAmt);
+
         return false;
     }
 
@@ -298,7 +303,10 @@ public class AccountController extends BaseController {
         System.out.println("You had following shareIds held/bought... "+heldIdShare.toString());
         for(Transaction t: boughtTransactionId){
             Share s = accountService.shareDAO.get(Long.parseLong(t.getTransactionShareId()));
+            System.out.println("----------------");
             System.out.println("Share Id:"+t.getTransactionShareId()+"| Of parent Share "+t.getParentShareId()+"| Company Name:"+s.getCompanyName()+"| total Units held:"+s.getTotalUnits()+"\n| Share value:"+s.getShareValue()+"|Of Company name:"+s.getCompanyName()+"| You bought it a CostOf:"+t.getTotalCost());
+            System.out.println("----------------");
+
         }
     }
 
@@ -309,7 +317,7 @@ public class AccountController extends BaseController {
             if(t.getAccountId().equals(accNo) && t.getType() == 0){
                 System.out.println("You bought amount: "+t.getTotalCost()+"| On :"+t.getDate()+"| of Company:"+s.getCompanyName()+"| units:"+s.getTotalUnits());
             }
-            if(t.getAccountId().equals(accNo) && t.getType() == 3){
+            if(t.getAccountId().equals(accNo) && t.getType() == 1){
                 System.out.println("You sold amount: "+t.getTotalCost()+"| On :"+t.getDate()+"| of Company:"+s.getCompanyName()+"| units:"+s.getTotalUnits());
             }
         }
