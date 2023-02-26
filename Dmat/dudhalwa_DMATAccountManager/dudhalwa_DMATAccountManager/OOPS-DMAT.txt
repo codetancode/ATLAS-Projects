@@ -1,0 +1,66 @@
+Share
+	id, companyName, price, lastUpdatedOn
+	>> Where, we have to manually add some records, in the table so that user can see these shares and do transactions for them
+
+User
+	id, userName, accountNumber, password, accountBalance, lastUpdatedOn
+	
+UserShares
+	id, userId, shareId, companyName, shareCount
+	
+Transaction
+	id, shareId, shareCount, pricePerShare, transactedOn, transactionCharges, sttCharges, type
+	type -> 1 : buy
+	type -> 2 : sell
+
+	
+Considering below Relationships:
+	1 User has 1 account
+	1 User can have many Shares
+	1 User can do many Transactions	
+
+create table User(
+		id INT IDENTITY(1,1),
+		userName VARCHAR(50) not null,
+		accountNumber INT UNIQUE,
+		password VARCHAR(30),
+		accountBalance INT,
+		department VARCHAR(30),
+		PRIMARY KEY(id);
+	)
+create table Share(
+                id INT IDENTITY(1,1),
+		companyName VARCHAR(50) not null,
+		price float,
+                createdOn DATETIME DEFAULT CURRENT_TIMESTAMP,
+		PRIMARY KEY(id);
+                
+)
+create table userShare(
+                id INT IDENTITY(1,1),
+		userId INT,
+                shareId INT,
+                companyName VARCHAR(50),
+                PRIMARY KEY(id),
+                FOREIGN KEY (userId) REFERENCES User(id),
+                FOREIGN KEY (shareId ) REFERENCES Share(id);
+)
+
+create table transcation(
+id INT IDENTITY(1,1),
+userId INT,
+shareId INT,
+shareCount INT,
+pricePerShare float, 
+transactedOn DATETIME DEFAULT CURRENT_TIMESTAMP , 
+transactionCharges INT, 
+type INT,
+PRIMARY KEY(id),
+FOREIGN KEY (shareid) REFERENCES Share(id),
+FOREIGN KEY (userId) REFERENCES User(id),
+)
+
+
+
+
+	

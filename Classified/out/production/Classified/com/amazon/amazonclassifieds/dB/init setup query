@@ -1,0 +1,12 @@
+
+create database amz_classified;
+use amz_classified;
+CREATE TABLE amz_user (
+        empId int,
+        isAdmin int,
+        firstName varchar(50),
+        lastName varchar(50),
+        email varchar(50),
+        phone varchar(20),
+        pswd varchar(20)
+);
